@@ -1,7 +1,7 @@
 version: '3'
 services:
-  vprodb:
-    image: vprofile/vprofiledb:V1
+  multi-tier-db:
+    image: bharathsharath/db
     ports:
       - "3306:3306"
     volumes:
@@ -9,12 +9,12 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=vprodbpass
 
-  vprocache01:
+  multi-tier-mem:
     image: memcached
     ports:
       - "11211:11211"
 
-  vpromq01:
+  multi-tier-rmq:
     image: rabbitmq
     ports:
       - "15672:15672"
@@ -22,15 +22,15 @@ services:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
 
-  vproapp:
-    image: vprofile/vprofileapp:V1
+  multi-tier-app:
+    image: bharathsharath/app
     ports:
       - "8080:8080"
-    volumes: 
+    volumes:
       - vproappdata:/usr/local/tomcat/webapps
 
-  vproweb:
-    image: vprofile/vprofileweb:V1
+  multi-tier-web:
+    image: bharathsharath/web
     ports:
       - "80:80"
 volumes:
